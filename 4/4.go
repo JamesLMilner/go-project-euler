@@ -2,60 +2,35 @@ package euler
 
 import (
   "fmt"
-  "math"
-  "sort"
+  "strconv"
 )
 
 func main() {
-  fmt.Println(getLargestPrimeFactor());
+  fmt.Println(getLargestPalindromicNumber());
 }
 
-func getLargestPrimeFactor() int {
-   num := 600851475143
-   factors := primeFactors(num);
-   sortedFactors := sort.IntSlice(factors)
-	 sort.Sort(sortedFactors)
+func getLargestPalindromicNumber() int {
 
-   return sortedFactors[len(sortedFactors)-1]
-}
+  largest := 0
 
-func primeFactors(num int) []int {
-
-  var factors []int
-  f := float64(num)
-
-  for i := 2; i < int(math.Sqrt(f)) + 1; i++ {
-
-     if (num % i == 0) {
-
-       fact := num / i
-
-       if (isPrime(fact)) {
-        factors = append(factors, i)
-       }
-       if (isPrime(i)) {
-        factors = append(factors, i)
-       }
-
-     }
-
+  for i := 100; i < 1000; i++ {
+      for j := 100; j < 1000; j++ {
+        num := i * j
+        rev := strconv.FormatInt(int64(num), 10)
+        if (Reverse(rev) == rev && num > largest) {
+          largest = num
+        }
+      }
   }
 
-  return factors
+  return largest
 
 }
 
-func isPrime(num int) bool {
-
-  prime := true;
-  f := float64(num)
-
-  for i := 2; i < int(math.Sqrt(f)) + 1; i++ {
-     if (num % i == 0) {
-       prime = false;
-     }
-  }
-
-  return prime
-
+func Reverse(s string) string {
+    runes := []rune(s)
+    for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+        runes[i], runes[j] = runes[j], runes[i]
+    }
+    return string(runes)
 }
